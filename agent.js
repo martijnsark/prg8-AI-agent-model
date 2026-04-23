@@ -1,7 +1,7 @@
 import { createAgent, tool } from "langchain";
 import { AzureChatOpenAI } from "@langchain/openai";
 import { MemorySaver } from "@langchain/langgraph";
-import { getWeather, rollDice, getCurrentDate, retrieve } from "./tools.js";
+import { getWeather, rollDice, getCurrentDate, retrieve, sendEmail } from "./tools.js";
 import * as z from "zod";
 
 const checkpointer = new MemorySaver();
@@ -17,7 +17,7 @@ const myToolResponse = z.object({
 // the agent
 export const agent = createAgent({
     model,
-    tools: [getWeather, rollDice, getCurrentDate, retrieve],
+    tools: [getWeather, rollDice, getCurrentDate, retrieve, sendEmail],
     responseFormat: myToolResponse,
     checkpointer,
     system: "You are a asssitent that always responds in english, you only use the date tool when the date is asked, the same counts for throwing a dice, the weather. you only use the retrieve tool when a fitting topic to a docuent is mentiond.",

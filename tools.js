@@ -1,6 +1,7 @@
 import {createAgent, tool } from "langchain";
 import { AzureOpenAIEmbeddings } from "@langchain/openai";
 import { FaissStore } from "@langchain/community/vectorstores/faiss";
+import nodemailer from "nodemailer";
 
 
 const embeddings = new AzureOpenAIEmbeddings({
@@ -122,3 +123,42 @@ export const retrieve = tool(
     }
   }
 )
+
+
+
+//email tool
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT || 587),
+  secure: false,
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
+
+export const sendEmail = tool(
+  async ({ to, subject, text }) => {
+    await transporter.sendMail({
+      from: process.env.EMAIL_FROM,
+      to,
+      subject,
+      text,
+    });
+
+    return "Email sent successfully.";
+  },
+  {
+    name: "send_email",
+    description: "Send an email to a recipient with subject and body text.",
+    schema: {
+      type: "object",
+      properties: {
+        to: { type: "string", description: "Recipient email address" },
+        subject: { type: "string" },
+        text: { type: "string" }
+      },
+      required: ["to", "subject", "text"]
+    }
+  }
+);
