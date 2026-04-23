@@ -42,7 +42,7 @@ btn.addEventListener("click", async (e) => {
     console.log(result.tokens)
 
     scoreDiv.textContent = `Agent Response`  
-    // inside try block, replace current assistant addMessage call:
+   
     addAssistantMessage(result.message, result.toolsUsed ?? []);
 
   } catch (error) {

@@ -5,7 +5,10 @@ import { getWeather, rollDice, getCurrentDate, retrieve, sendEmail } from "./too
 import * as z from "zod";
 
 const checkpointer = new MemorySaver();
-const model = new AzureChatOpenAI({temperature: 0.2});
+const model = new AzureChatOpenAI({
+  temperature: 0.2,
+  maxTokens: 3300, 
+});
 const userId = `appname-${crypto.randomUUID()}`;
 
 //tool response
