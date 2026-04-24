@@ -85,7 +85,7 @@ export const getCurrentDate = tool(
   },
   {
     name: "get_current_date",
-    description: "Give the current date in a readable dutch format.",
+    description: "Give the current date in english in a readable format.",
     schema: {
       type: "object",
       properties: {},
@@ -131,6 +131,7 @@ export const retrieve = tool(
 export function createSendEmailTool(emailSettings) {
   return tool(
     async ({ to, subject, text }) => {
+      console.log("🔧 email-tool is being applied!");
       // These values come from the user's settings form, not from .env.
       const smtpUser = emailSettings?.smtpUser?.trim();
       const smtpPass = emailSettings?.smtpPass?.trim();

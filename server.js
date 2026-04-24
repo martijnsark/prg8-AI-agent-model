@@ -1,5 +1,5 @@
 import express from "express"
-import { callAgent } from "./agent.js"
+import { callAgent, getHistory, resetUser } from "./agent.js"
 
 const app = express()
 app.use(express.json())
@@ -27,6 +27,18 @@ app.post("/api/chat", async(req,res) => {
   const emailSettings = emailSettingsByUserId.get(userId);
   const response = await callAgent(prompt, userId, emailSettings)
   res.json(response);
+})
+
+app.post("/api/getHistory", async(req,res) => {
+    const { userId } = req.body 
+    const history = getHistory(userId)
+    res.json(history)
+})
+
+app.post("/api/reset", (req, res) => {
+  const { userId } = req.body
+  resetUser(userId)
+  res.json({ success: true })
 })
 
 app.listen(3000, ()=> console.log("started on localhost:3000"))

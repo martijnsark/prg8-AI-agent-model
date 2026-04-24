@@ -5,6 +5,7 @@ const btn = document.querySelector("#chatSendBtn")
 const input = document.querySelector("#input")
 const chatDiv = document.querySelector(".chat")
 const scoreDiv = document.querySelector(".score")
+const resetBtn = document.querySelector("#reset")
 const emailSettingsForm = document.querySelector("#emailSettingsForm")
 const smtpUserInput = document.querySelector("#smtpUser")
 const smtpPassInput = document.querySelector("#smtpPass")
@@ -69,6 +70,34 @@ async function saveEmailSettings({ smtpUser, smtpPass, emailFrom }) {
   }
 }
 
+async function loadHistory() {
+  try {
+    const res = await fetch("/api/getHistory", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId })
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to load history.");
+    }
+
+    const history = await res.json();
+
+    history.forEach((msg) => {
+      if (msg.role === "user") {
+        addMessage("user", msg.content ?? "");
+      }
+
+      if (msg.role === "assistant" || msg.role === "ai") {
+        addMessage("assistant", msg.content ?? "");
+      }
+    });
+  } catch (error) {
+    console.error("Could not load chat history:", error);
+  }
+}
+
 
 btn.addEventListener("click", async (e) => {
   //prevent reload
@@ -80,6 +109,9 @@ btn.addEventListener("click", async (e) => {
   addMessage("user", prompt)
   input.value = ""
   btn.disabled = true
+  if (resetBtn) {
+    resetBtn.disabled = true
+  }
 
   try {
     //get data
@@ -104,6 +136,9 @@ btn.addEventListener("click", async (e) => {
     console.error(error)
   } finally {
     btn.disabled = false
+    if (resetBtn) {
+      resetBtn.disabled = false
+    }
   }
 })
 
@@ -141,6 +176,35 @@ function addAssistantMessage(text, toolsUsed) {
   chatDiv.appendChild(bubble);
   chatDiv.scrollTop = chatDiv.scrollHeight;
 }
+
+if (resetBtn) {
+  resetBtn.addEventListener("click", async () => {
+    btn.disabled = true
+    resetBtn.disabled = true
+
+    try {
+      const response = await fetch("/api/reset", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId })
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to reset chat.");
+      }
+
+      chatDiv.innerHTML = "";
+    } catch (error) {
+      addMessage("assistant", "````_something went wrong while resetting_````")
+      console.error(error)
+    } finally {
+      btn.disabled = false
+      resetBtn.disabled = false
+    }
+  })
+}
+
+loadHistory()
 
 
 
