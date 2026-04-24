@@ -21,6 +21,53 @@ body {
   letter-spacing: -0.03em;
 }
 
+.settings-card {
+  width: min(100%, 520px);
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow: 0 14px 40px rgba(15, 23, 42, 0.08);
+}
+
+.settings-card h2 {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+}
+
+.settings-form {
+  display: grid;
+  gap: 10px;
+}
+
+.settings-form label {
+  display: grid;
+  gap: 6px;
+  font-size: 0.95rem;
+}
+
+.settings-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  outline: none;
+  background: white;
+}
+
+.settings-input:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+.settings-status {
+  margin: 0;
+  min-height: 1.2rem;
+  font-size: 0.9rem;
+  color: #334155;
+}
+
 form {
   width: min(100%, 520px);
 }

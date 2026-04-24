@@ -9,12 +9,33 @@
 </head>
 <body>
     <h1 class="title">Agent website</h1>
+
+    <section class="settings-card">
+        <h2>Email settings</h2>
+        <form class="settings-form" id="emailSettingsForm">
+            <label>
+                SMTP user
+                <input class="settings-input" id="smtpUser" name="smtpUser" type="email" required>
+            </label>
+            <label>
+                SMTP pass
+                <input class="settings-input" id="smtpPass" name="smtpPass" type="password" required>
+            </label>
+            <label>
+                Email from
+                <input class="settings-input" id="emailFrom" name="emailFrom" type="email" required>
+            </label>
+            <button class="trigger" id="saveSettingsBtn" type="submit">Save email settings</button>
+            <p class="settings-status" id="settingsStatus"></p>
+        </form>
+    </section>
+
     <form>
         <br><br>
         <div class="score"></div>
         <div class="chat"></div>
         <input class="input" name="input" id="input">
-        <button class="trigger">Send</button>
+        <button class="trigger" id="chatSendBtn">Send</button>
         <br><br>
     </form>
 </body>

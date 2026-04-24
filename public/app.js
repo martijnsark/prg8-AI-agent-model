@@ -1,10 +1,15 @@
 import {micromark} from 'https://esm.sh/micromark@3?bundle'
 
 // client app.js
-const btn = document.querySelector("button")
+const btn = document.querySelector("#chatSendBtn")
 const input = document.querySelector("#input")
 const chatDiv = document.querySelector(".chat")
 const scoreDiv = document.querySelector(".score")
+const emailSettingsForm = document.querySelector("#emailSettingsForm")
+const smtpUserInput = document.querySelector("#smtpUser")
+const smtpPassInput = document.querySelector("#smtpPass")
+const emailFromInput = document.querySelector("#emailFrom")
+const settingsStatus = document.querySelector("#settingsStatus")
 let userId = localStorage.getItem("userid");
 
 if (!userId) {
@@ -12,8 +17,57 @@ if (!userId) {
   localStorage.setItem("userid", userId);
 }
 
+const storedEmailSettings = JSON.parse(localStorage.getItem("emailSettings") || "null");
+if (storedEmailSettings) {
+  // Pre-fill the settings form from browser storage.
+  smtpUserInput.value = storedEmailSettings.smtpUser || "";
+  smtpPassInput.value = storedEmailSettings.smtpPass || "";
+  emailFromInput.value = storedEmailSettings.emailFrom || "";
+  // Re-send to backend after reload because backend storage is in-memory.
+  saveEmailSettings(storedEmailSettings).catch((error) => {
+    console.error("Could not re-sync saved email settings:", error);
+  });
+}
+
 
 console.log("starting frontend")
+
+emailSettingsForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const smtpUser = smtpUserInput.value.trim();
+  const smtpPass = smtpPassInput.value.trim();
+  const emailFrom = emailFromInput.value.trim();
+
+  if (!smtpUser || !smtpPass || !emailFrom) {
+    settingsStatus.textContent = "Please fill all email settings fields.";
+    return;
+  }
+
+  settingsStatus.textContent = "Saving...";
+
+  try {
+    await saveEmailSettings({ smtpUser, smtpPass, emailFrom });
+    localStorage.setItem("emailSettings", JSON.stringify({ smtpUser, smtpPass, emailFrom }));
+    settingsStatus.textContent = "Email settings saved.";
+  } catch (error) {
+    settingsStatus.textContent = "Could not save settings.";
+    console.error(error);
+  }
+})
+
+async function saveEmailSettings({ smtpUser, smtpPass, emailFrom }) {
+  // Backend stores these settings under the current userId.
+  const response = await fetch("/api/email-settings", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ userId, smtpUser, smtpPass, emailFrom })
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to save email settings.");
+  }
+}
 
 
 btn.addEventListener("click", async (e) => {

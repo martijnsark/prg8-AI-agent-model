@@ -127,38 +127,51 @@ export const retrieve = tool(
 
 
 //email tool
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT || 587),
-  secure: false,
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-});
+//Made this a function so each request gets a user-specific email tool, preventing reuse of another user's SMTP credentials.
+export function createSendEmailTool(emailSettings) {
+  return tool(
+    async ({ to, subject, text }) => {
+      // These values come from the user's settings form, not from .env.
+      const smtpUser = emailSettings?.smtpUser?.trim();
+      const smtpPass = emailSettings?.smtpPass?.trim();
+      const emailFrom = emailSettings?.emailFrom?.trim();
 
-export const sendEmail = tool(
-  async ({ to, subject, text }) => {
-    await transporter.sendMail({
-      from: process.env.EMAIL_FROM,
-      to,
-      subject,
-      text,
-    });
+      if (!smtpUser || !smtpPass || !emailFrom) {
+        throw new Error("Email settings are missing. Please save SMTP settings first.");
+      }
 
-    return "Email sent successfully.";
-  },
-  {
-    name: "send_email",
-    description: "Send an email to a recipient with subject and body text.",
-    schema: {
-      type: "object",
-      properties: {
-        to: { type: "string", description: "Recipient email address" },
-        subject: { type: "string" },
-        text: { type: "string" }
-      },
-      required: ["to", "subject", "text"]
+      // Host/port stay in env; auth/from are user-provided at runtime.
+      const transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST,
+        port: Number(process.env.SMTP_PORT || 587),
+        secure: false,
+        auth: {
+          user: smtpUser,
+          pass: smtpPass,
+        },
+      });
+
+      await transporter.sendMail({
+        from: emailFrom,
+        to,
+        subject,
+        text,
+      });
+
+      return "Email sent successfully.";
+    },
+    {
+      name: "send_email",
+      description: "Send an email to a recipient with subject and body text.",
+      schema: {
+        type: "object",
+        properties: {
+          to: { type: "string", description: "Recipient email address" },
+          subject: { type: "string" },
+          text: { type: "string" }
+        },
+        required: ["to", "subject", "text"]
+      }
     }
-  }
-);
+  );
+}
