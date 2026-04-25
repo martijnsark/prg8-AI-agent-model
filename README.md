@@ -6,6 +6,11 @@
 
 ## Installation instructions
 
+### 1. Requirements
+- Node.js 18 or higher
+- npm
+- A `.env` file with your AI configuration
+
 1. Clone the repository:
 	```bash
 	git clone https://github.com/martijnsark/prg8-AI-agent-model.git
