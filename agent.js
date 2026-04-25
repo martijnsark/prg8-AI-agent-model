@@ -17,7 +17,7 @@ const threadVersionByUserId = new Map();
 //tool response
 const myToolResponse = z.object({
     message: z.string().describe("The message to the user"),
-    toolsUsed: z.array(z.string()).describe("List with names of tools used in the response, without the word function.")
+    toolsUsed: z.array(z.string()).describe("List with all the names of tools that were used in the response, without the word function.")
 });
 
 function createRuntimeAgent(emailSettings) {
