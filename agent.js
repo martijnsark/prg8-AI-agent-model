@@ -6,7 +6,7 @@ import * as z from "zod";
 
 const checkpointer = new MemorySaver();
 const model = new AzureChatOpenAI({
-  temperature: 0.2,
+  temperature: 0.1,
   maxTokens: 3300, 
 });
 // Stores the last chat messages per user for frontend history rendering.
@@ -17,7 +17,7 @@ const threadVersionByUserId = new Map();
 //tool response
 const myToolResponse = z.object({
     message: z.string().describe("The message to the user"),
-    toolsUsed: z.array(z.string()).describe("List with all the names of tools that were used in the response, without the word function.")
+    toolsUsed: z.array(z.string()).describe("List with all the names of tools that were used in the response look at what other tools are being used, without the word function.")
 });
 
 function createRuntimeAgent(emailSettings) {
@@ -27,7 +27,7 @@ function createRuntimeAgent(emailSettings) {
     tools: [getWeather, rollDice, getCurrentDate, retrieve, createSendEmailTool(emailSettings)],
     responseFormat: myToolResponse,
     checkpointer,
-    system: "You are a asssitent that always responds in english, you only use the date tool when the date is asked, the same counts for throwing a dice, the weather. you only use the retrieve tool when a fitting topic to a docuent is mentiond.",
+    system: "You are a profesinal email assistent which always speaks in english, its very important that any and all emails you write and/or send match the users request and rely on the examples from the retrieve tool. If a mail requires planning you may the date tool the same aplies to weather if it implies a outside activity.",
   });
 }
 

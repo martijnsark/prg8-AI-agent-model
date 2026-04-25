@@ -115,7 +115,8 @@ export const retrieve = tool(
   },
   {
     name: "retrieve",
-    description: "Retrieve information related to javasscript code from example.txt, ecology from ecology.pdf, and history from history-matters.pdf",
+    description: 
+    "Only when writting a email retrieve information related to profesinal emails from Profesinal-email-examples.pdf, informal emails from Informal-email-examples.pdf, positive emails from Positive-email-examples.pdf, and emails containg bad news from Bad-news-email-examples.pdf",
     schema: {
         "type": "object",
         "properties": { "query": { "type": "string" } },
