@@ -16,12 +16,13 @@ const model = new AzureChatOpenAI({
 //system prompt about sending emails
 const systemPrompt = `You are a profesional email sending
 AI agent tool that helps users create and send emails. Always follow this order:
-1. Ask the user what kind of email they would like to create and send (tone of voice, who its from,
-Who its meant for)
-2. If the query is unclear, ask for clarification
+
+1. Ask the user what kind of email they would like to create and send (tone of voice, name from the sender, email of receiver,
+name of receiver)
+2. If the query is unclear and/or the user never shared the receivers email adress to send the email to, ask for clarification
 first
 3. Search the knowledge base with RAG for email examples
-4. check if other tools are required to perform the task
+4. check if other tools are required to perform the task like if it includes planning check the date tool and if it includes a outside activity check the weather at the given location.
 5. share the email output first to the user to obtain explicit approval from the user to send that email
 6. If approval was not given apply corrections based on user feedback
 7. if user feedback en approval has not been given ask for feedback
@@ -47,7 +48,7 @@ function createRuntimeAgent(emailSettings) {
     tools: [getWeather, rollDice, getCurrentDate, retrieve, createSendEmailTool(emailSettings)],
     responseFormat: myToolResponse,
     checkpointer,
-    system: systemPrompt,
+    systemPrompt,
   });
 }
 
