@@ -133,7 +133,7 @@ export function createSendEmailTool(emailSettings) {
   return tool(
     async ({ to, subject, text }) => {
       console.log("🔧 email-tool is being applied!");
-      // These values come from the user's settings form, not from .env.
+      //these values come from the user's settings form, not from .env.
       const smtpUser = emailSettings?.smtpUser?.trim();
       const smtpPass = emailSettings?.smtpPass?.trim();
       const emailFrom = emailSettings?.emailFrom?.trim();
@@ -142,7 +142,7 @@ export function createSendEmailTool(emailSettings) {
         throw new Error("Email settings are missing. Please save SMTP settings first.");
       }
 
-      // Host/port stay in env; auth/from are user-provided at runtime.
+      //host/port stay in env; auth/from are user-provided at runtime.
       const transporter = nodemailer.createTransport({
         host: process.env.SMTP_HOST,
         port: Number(process.env.SMTP_PORT || 587),

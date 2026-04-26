@@ -5,7 +5,7 @@ const app = express()
 app.use(express.json())
 app.use(express.static("public"))
 
-// In-memory runtime settings keyed by frontend userId.
+//in-memory runtime settings keyed by frontend userId.
 const emailSettingsByUserId = new Map();
 
 app.post("/api/email-settings", (req, res) => {
@@ -15,26 +15,31 @@ app.post("/api/email-settings", (req, res) => {
     return res.status(400).json({ error: "Missing required email settings." });
   }
 
-  // Save only the three user-managed email fields.
+  //save only the three user-managed email fields.
   emailSettingsByUserId.set(userId, { smtpUser, smtpPass, emailFrom });
   return res.json({ success: true });
 })
 
+//chat route
 app.post("/api/chat", async(req,res) => {
   const { prompt, userId } = req.body;
   console.log(prompt, userId)
-  // Use email settings for this user when the agent invokes send_email.
+  //use email settings for this user when the agent invokes send_email.
   const emailSettings = emailSettingsByUserId.get(userId);
   const response = await callAgent(prompt, userId, emailSettings)
   res.json(response);
 })
 
+
+//history route
 app.post("/api/getHistory", async(req,res) => {
     const { userId } = req.body 
     const history = getHistory(userId)
     res.json(history)
 })
 
+
+//reset route
 app.post("/api/reset", (req, res) => {
   const { userId } = req.body
   resetUser(userId)
