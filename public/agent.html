@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./agent.css" />
+    <script defer type="module" src="agent.js"></script>
+</head>
+<body>
+     <nav class="site-nav">
+        <a href="index.html">Home</a>
+        <a href="agent.html">Send emails</a>
+    </nav>
+
+    <h1 class="title">Agent website</h1>
+
+    <section class="settings-card">
+        <h2>Email settings</h2>
+        <form class="settings-form" id="emailSettingsForm">
+            <label>
+                User email
+                <input class="settings-input" id="smtpUser" name="smtpUser" type="email" required>
+            </label>
+            <label>
+                Email app password
+                <input class="settings-input" id="smtpPass" name="smtpPass" type="password" required>
+            </label>
+            <label>
+                Repeat user email
+                <input class="settings-input" id="emailFrom" name="emailFrom" type="email" required>
+            </label>
+            <button class="trigger" id="saveSettingsBtn" type="submit">Save email settings</button>
+            <p class="settings-status" id="settingsStatus"></p>
+        </form>
+    </section>
+
+    <form>
+        <br><br>
+        <div class="score"></div>
+        <div class="chat"></div>
+        <input class="input" name="input" id="input">
+        <button class="trigger" id="chatSendBtn">Send</button>
+        <button type="button" id="reset">Reset Chat</button>
+        <br><br>
+    </form>
+</body>
+</html>

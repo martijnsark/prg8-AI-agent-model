@@ -3,41 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="./style.css" />
+    <title>AI study quiz</title>
     <script defer type="module" src="app.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1 class="title">Agent website</h1>
-
-    <section class="settings-card">
-        <h2>Email settings</h2>
-        <form class="settings-form" id="emailSettingsForm">
-            <label>
-                User email
-                <input class="settings-input" id="smtpUser" name="smtpUser" type="email" required>
-            </label>
-            <label>
-                Email app password
-                <input class="settings-input" id="smtpPass" name="smtpPass" type="password" required>
-            </label>
-            <label>
-                Repeat user email
-                <input class="settings-input" id="emailFrom" name="emailFrom" type="email" required>
-            </label>
-            <button class="trigger" id="saveSettingsBtn" type="submit">Save email settings</button>
-            <p class="settings-status" id="settingsStatus"></p>
-        </form>
-    </section>
-
-    <form>
-        <br><br>
-        <div class="score"></div>
-        <div class="chat"></div>
-        <input class="input" name="input" id="input">
-        <button class="trigger" id="chatSendBtn">Send</button>
-        <button type="button" id="reset">Reset Chat</button>
-        <br><br>
-    </form>
+    <nav class="site-nav">
+        <a href="index.html">Home</a>
+        <a href="agent.html">Send emails</a>
+    </nav>
+    <h1 class="title">Multi-Tool Email Agent</h1>
+    <p class="introduction-text">
+        On this home page, you can see which tools the AI uses and how to connect your own email account to the <a href="agent.html">send_email tool</a>.
+        Follow these steps to set up a Google app password:
+    </p>
+    <ol class="introduction-steps">
+        <li>Sign in to your Google account and open the <a href="https://myaccount.google.com/security" target="_blank" rel="noopener noreferrer">security settings</a>.</li>
+        <li>Turn on <a href="https://support.google.com/accounts/answer/185839" target="_blank" rel="noopener noreferrer">2-Step Verification</a> if it is not already enabled.</li>
+        <li>Open the <a href="https://myaccount.google.com/apppasswords" target="_blank" rel="noopener noreferrer">app passwords</a> page and create a new app password.</li>
+        <li>Copy the app password and enter your email address and password on the <a href="agent.html">Send emails page</a>.</li>
+        <li>Save the settings and test whether the AI can send an email through send_email.</li>
+    </ol>
+    <p class="introduction-text">
+        This connects your email securely to the AI so you can start using the available tools right away.
+    </p>
 </body>
 </html>
